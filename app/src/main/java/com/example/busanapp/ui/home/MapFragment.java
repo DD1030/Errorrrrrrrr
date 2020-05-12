@@ -24,6 +24,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public MapFragment(){}
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
@@ -42,8 +43,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        MapFragment mapFragment = (MapFragment)getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);  //mapFragment 가 아니라 callback이 떠야함
+        com.naver.maps.map.MapFragment mapFragment = (com.naver.maps.map.MapFragment)getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment == null){
+            mapFragment = com.naver.maps.map.MapFragment.newInstance();
+            getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
 
         return rootView;
     }
@@ -51,11 +56,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void getMapAsync(MapFragment mapFragment) {
     }
 
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch(requestCode){
-            case ACCESS_LOCATION_PERMISSION_REQUEST_CODE :
+        switch (requestCode) {
+            case ACCESS_LOCATION_PERMISSION_REQUEST_CODE:
                 locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 return;
         }

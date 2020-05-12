@@ -3,6 +3,7 @@ package com.example.busanapp.ui.home;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
@@ -43,7 +44,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        com.naver.maps.map.MapFragment mapFragment = (com.naver.maps.map.MapFragment)getChildFragmentManager().findFragmentById(R.id.map);
+        com.naver.maps.map.MapFragment mapFragment = (com.naver.maps.map.MapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null){
             mapFragment = com.naver.maps.map.MapFragment.newInstance();
             getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
@@ -51,6 +52,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         return rootView;
+    }
+
+    private FragmentManager getSupportFragmentManager() {
+        return getSupportFragmentManager();
     }
 
     private void getMapAsync(MapFragment mapFragment) {
